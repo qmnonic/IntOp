@@ -2,11 +2,18 @@
 <eml>
   <dataset>
     <organizationName>Cornell University Museum of Vertebrates</organizationName>
+    <title lang="eng">CUMV Amphibian Collection</title>
     <positionName>Curator</positionName>
     <individualName>
       <givenName>John</givenName>
       <surName>Friel</surName>
     </individualName>
-    <title lang="eng">CUMV Amphibian Collection</title>
+    <address>
+      <postalCode>14850-1923</postalCode>
+      <country>US</country>
+      <administrativeArea>NY</administrativeArea>
+      <deliveryPoint>159 Sapsucker Woods Road</deliveryPoint>
+      <city>Ithaca</city>
+    </address>
   </dataset>
 </eml>

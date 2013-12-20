@@ -2,14 +2,16 @@ from lxml import etree
 from collections import OrderedDict as OD
 
 
-
-## Writes an set of elements for "responsible party (http://knb.ecoinformatics.org/software/eml/eml-2.1.1/eml-party.html)"
-## which can then be appended into the root xml document.  
+## This function will write a full XML document based on a dictionary or ordered dictionary.
+## Ideally this will allow an end user to parse a text input document into the expected dictionary
+## format and then output xml.
+## Parameters:
 ## root_name is the base of the node you want to create. 
 ## node_params is a dictionary of element:value pairs
-## If an element in a dictionary is a key:string, it is assumed
-## that key is the xml element, and string is the value.  Otherwise it should be a list of the form: key:[value,[attribute,value],[attribute:value]...etc]
-## to encode attributes in xml elements.  
+## If an element in a dictionary is a key:string, it is assumed that key is the xml element, and string is the value.  
+## If an element in a dictionary is a key:list, it is assumed key:[value,[attribute,value],[attribute:value]...etc], and attributes will be added as presented in the list
+## If an element in a dictionary is a key:dictionary, then the dictionary will take key to be the sub root element, and all elements in the dictionary will be nested withn the key element
+
 
 def write_eml(node_params, root_name, parent_node = None):
 	if parent_node is None:
@@ -45,29 +47,32 @@ def write_eml(node_params, root_name, parent_node = None):
 
 
 
-
-### Test simple case
-test_d = {"ted":"hart","xml":"md"}
-### Test case with parameters
-test = {"eml":{"ted":"hart","zinger":["haha",["id","123o2"],["funny","yes"]]}}
-
+### Preparesd example from http://ipt.vertnet.org:8080/ipt/eml.do?r=cumv_amph&v=3
 
 
 testeml = OD(dataset = OD(individualName = OD(givenName="John",surName="Friel"),
 	title = ["CUMV Amphibian Collection",["lang","eng"]],
 	organizationName = "Cornell University Museum of Vertebrates",
-	positionName = "Curator"
+	positionName = "Curator",
+	address = OD( 
+		deliveryPoint = "159 Sapsucker Woods Road",
+		city = "Ithaca",
+		administrativeArea = "NY",
+		postalCode = "14850-1923",
+		country = "US"
 
-	))
-
-
-### Real EML test:  Tries to recreate part of http://ipt.vertnet.org:8080/ipt/eml.do?r=cumv_amph&v=3
+		)
+	)
+	)
 
 
 
 root = write_eml(node_params = testeml,root_name = "eml")
 
-print(etree.tostring(root,  encoding="UTF-8",pretty_print=True,xml_declaration=True))
+### Uncomment lines to either write to file or just print to screen
+
+
+#print(etree.tostring(root,  encoding="UTF-8",pretty_print=True,xml_declaration=True))
 
 
 
