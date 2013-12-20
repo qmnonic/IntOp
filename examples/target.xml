@@ -1,0 +1,81 @@
+<targetArchive xmlns="http://idigbio.org/wiki/index.php/Target_File_Format/"
+  xmlns:dwctext="http://rs.tdwg.org/dwc/text/"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xsi:schemaLocation="http://idigbio.org/wiki/index.php/Target_File_Format http://idigbio.org/wiki/index.php/File:Target.xsd">
+	
+  <target encoding="UTF-8" fieldsTerminatedBy="\t" linesTerminatedBy="\n" ignoreHeaderLines="1" 
+   rowType="http://rs.tdwg.org/dwc/terms/Occurence">
+    <dwctext:files>
+        <dwctext:location>transcriptions.txt</dwctext:location>
+    </dwctext:files>
+    <coreid index="0" />
+    <field 
+      index="1" 
+      term="http://rs.tdwg.org/dwc/terms/country" 
+      order="1" 
+      label="Country"
+      description="The country in which the specimen resides."
+      placeholderValue="USA"
+      fieldContentType="select"
+      stubUse="ignore"
+    >
+      <value>USA</value>
+      <value>Canada</value>
+      <value>Mexico</value>
+    </field>
+    <field 
+      index="2" 
+      term="http://rs.tdwg.org/dwc/terms/stateProvince" 
+      order="2" 
+      label="State or Province"
+      description="The state or province in which the specimen resides."
+      stubUse="ignore"
+      examples="Florida, Quebec"
+    />
+    <field 
+      index="3" 
+      term="http://rs.tdwg.org/dwc/terms/scientificName" 
+      order="3" 
+      label="Scientific Name" 
+      description="The scientfic name of the specimen, this is typically a two word latin phrase and is often either underlined or in italics."
+      stubUse="validate"
+      examples="Puma Concolor, Quercus Alba"
+    />
+    <field 
+      index="4" 
+      term="http://rs.tdwg.org/dwc/terms/eventDate" 
+      order="4" 
+      label="Collection Date" 
+      description="The date the specimen was collected, frequently the only date on the label. When multiple dates appear, it is likely not the one near the scientific name value."
+      fieldContentType="date"
+    />
+    <field 
+      index="5" 
+      term="http://rs.tdwg.org/dwc/terms/recordedBy" 
+      order="5" 
+      label= "Collector Name" 
+      description="The name of the collectors of the specimen, frequently the only name on the label. When multiple names appear in multiple places, the collector names are likely not near the scientific name value, and may often be near the collection date."
+      examples="R.K. Godfrey"
+      multiValued="true"
+    />
+    <field 
+      index="6" 
+      term="http://rs.tdwg.org/dwc/terms/catalogNumber" 
+      order="6" 
+      label="Catalog Number" 
+      description="A number, possibly prefixed with a short string, that is prominently displayed on the label. Sometimes this may be the number on a barcode sticker."
+      stubUse="ignore"
+    />
+    <field 
+      index="7" 
+      term="http://rs.tdwg.org/dwc/terms/decimalLatitude" 
+      order="7" 
+      label="Latitude" 
+      description="The latitude of the specimen."
+      stubUse="ignore"
+      validationRegex="([0-9]{1,3}\.[0-9]*)"
+    />
+
+  </target>
+</targetArchive>

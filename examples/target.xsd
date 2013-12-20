@@ -1,0 +1,105 @@
+<?xml version='1.0' encoding='utf-8'?>
+<xs:schema version="0.1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema-Instance"
+	xmlns:arch="http://idigbio.org/wiki/index.php/Target_File_Format/" xmlns:dwc="http://rs.tdwg.org/dwc/terms/" xmlns:dwctext="http://rs.tdwg.org/dwc/text/"
+	targetNamespace="http://idigbio.org/wiki/index.php/Target_File_Format/" attributeFormDefault="unqualified"
+	elementFormDefault="qualified">
+	<xs:import namespace="http://rs.tdwg.org/dwc/text/" schemaLocation="http://rs.tdwg.org/dwc/text/tdwg_dwc_text.xsd"/>
+
+	<xs:element name="targetArchive">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="target" type="arch:targetFileType" maxOccurs="1" minOccurs="1"/>
+			</xs:sequence>
+			<xs:attribute name="metadata" type="xs:anyURI" use="optional"/>
+		</xs:complexType>
+	</xs:element>
+
+	<!-- a file representing an extension file in a star schema -->
+	<xs:complexType name="targetFileType">
+		<xs:complexContent>
+			<xs:extension base="dwctext:fileType">
+				<xs:sequence>
+					<xs:element name="coreid" type="dwctext:idFieldType" minOccurs="1" maxOccurs="1"/>
+					<xs:element name="field" type="arch:targetFieldType" minOccurs="1"
+						maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:simpleType name="typeEnum">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="checkbox"/>
+			<xs:enumeration value="radio"/>
+			<xs:enumeration value="select"/>
+			<xs:enumeration value="multiselect"/>
+			<xs:enumeration value="date"/>
+			<xs:enumeration value="text"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="stubEnum">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="ignore"/>
+			<xs:enumeration value="validate"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<!-- A field represents a column within the file -->
+	<xs:complexType name="targetFieldType">
+		<xs:complexContent>
+			<xs:extension base="dwctext:fieldType">
+				<xs:sequence>
+					<xs:element name="value" type="xs:string" minOccurs="0"
+							maxOccurs="unbounded"/>
+				</xs:sequence>
+				<xs:attribute name="order" type="xs:integer" use="optional">
+					<xs:annotation>
+						<xs:documentation>The order of fields to present to the user. Indices start with 0.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>			
+				<xs:attribute name="label" type="xs:string" use="optional">
+					<xs:annotation>
+						<xs:documentation>A label text that should be used to describe the field in user interfaces.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="description" type="xs:string" use="optional">
+					<xs:annotation>
+						<xs:documentation>A long form description for the field.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="placeholderValue" type="xs:string" use="optional">
+					<xs:annotation>
+						<xs:documentation>A placeholder value to put in the field before users have typed anything. Also, the default selection from a controlled vocabulary drop down.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="examples" type="xs:string" use="optional">
+					<xs:annotation>
+						<xs:documentation>An example value to display for the field.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="multiValued" type="xs:boolean" use="optional">
+					<xs:annotation>
+						<xs:documentation>Whether the field should present multiple entry boxes to the user.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="validationRegex" type="xs:string" use="optional">
+					<xs:annotation>
+						<xs:documentation>A regular expresion to use to validate the field content.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="fieldContentType" type="arch:typeEnum" use="optional">
+					<xs:annotation>
+						<xs:documentation>A regular expresion to use to validate the field content.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="stubUse" type="arch:stubEnum" use="optional">
+					<xs:annotation>
+						<xs:documentation>A regular expresion to use to validate the field content.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+</xs:schema>
