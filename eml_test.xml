@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<eml>
+  <dataset>
+    <organizationName>Cornell University Museum of Vertebrates</organizationName>
+    <positionName>Curator</positionName>
+    <individualName>
+      <givenName>John</givenName>
+      <surName>Friel</surName>
+    </individualName>
+    <title lang="eng">CUMV Amphibian Collection</title>
+  </dataset>
+</eml>

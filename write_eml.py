@@ -1,4 +1,7 @@
 from lxml import etree
+from collections import OrderedDict as OD
+
+
 
 ## Writes an set of elements for "responsible party (http://knb.ecoinformatics.org/software/eml/eml-2.1.1/eml-party.html)"
 ## which can then be appended into the root xml document.  
@@ -8,16 +11,20 @@ from lxml import etree
 ## that key is the xml element, and string is the value.  Otherwise it should be a list of the form: key:[value,[attribute,value],[attribute:value]...etc]
 ## to encode attributes in xml elements.  
 
-def eml_subnode(root_name,node_params):
-	tmp_root = etree.Element(root_name)
+def write_eml(node_params, root_name, parent_node = None):
+	if parent_node is None:
+		#root_name = node_params.keys()[0]
+		root = etree.Element(root_name)
+	else:
+		root = parent_node
 	
-	for k,v in node_params.iteritems():
+	for k,v in node_params.items():
 
 		## The case where there is no attribute
 		if isinstance(v,str):
 			tmp_el = etree.Element(k)
 			tmp_el.text = v
-			tmp_root.append(tmp_el)
+			root.append(tmp_el)
 
 		## The case where we have attributes
 
@@ -25,27 +32,47 @@ def eml_subnode(root_name,node_params):
 			tmp_el = etree.Element(k)
 			tmp_el.text = v[0]
 			for i in range(len(v))[1:]:
-				print v[i][1]
 				tmp_el.set(v[i][0],v[i][1])
-			tmp_root.append(tmp_el)
+			root.append(tmp_el)
+
+		if isinstance(v,dict):
+			sub_node = write_eml(node_params = v, root_name = k)
+			root.append(sub_node)
 
 
 
-	return tmp_root
+	return root
+
+
+
 
 ### Test simple case
 test_d = {"ted":"hart","xml":"md"}
 ### Test case with parameters
-test_l = {"ted":"hart","zinger":["haha",["id","123o2"],["funny","yes"]]}
-
-root = eml_subnode("test",test_l)
-
-print(etree.tostring(root, pretty_print=True))
+test = {"eml":{"ted":"hart","zinger":["haha",["id","123o2"],["funny","yes"]]}}
 
 
 
-#with open('/Users/tedhart/Documents/output.xml', 'w') as f:
-#	f.write(etree.tostring(my_doc, encoding="UTF-8",pretty_print=True,xml_declaration=True))
+testeml = OD(dataset = OD(individualName = OD(givenName="John",surName="Friel"),
+	title = ["CUMV Amphibian Collection",["lang","eng"]],
+	organizationName = "Cornell University Museum of Vertebrates",
+	positionName = "Curator"
+
+	))
+
+
+### Real EML test:  Tries to recreate part of http://ipt.vertnet.org:8080/ipt/eml.do?r=cumv_amph&v=3
+
+
+
+root = write_eml(node_params = testeml,root_name = "eml")
+
+print(etree.tostring(root,  encoding="UTF-8",pretty_print=True,xml_declaration=True))
+
+
+
+with open('eml_test.xml', 'w') as f:
+	f.write(etree.tostring(root, encoding="UTF-8",pretty_print=True,xml_declaration=True))
 
 
 
